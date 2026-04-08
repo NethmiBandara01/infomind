@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<{ from: string; text: string }[]>([
-    { from: "Bot", text: "👋 Hi! I'm your Sri Lanka career guidance assistant. Ask me anything about education paths, universities, vocational training, or careers!" }
+    { from: "Bot", text: "👋 Hi! I'm your career guidance assistant. Ask me anything about education paths, universities, vocational training, or careers! 😊" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,8 +51,8 @@ export default function Chatbot() {
             color: "white", display: "flex", justifyContent: "space-between", alignItems: "center"
           }}>
             <div>
-              <div style={{ fontWeight: 600, fontSize: 15 }}>🎓 Career Assistant</div>
-              <div style={{ fontSize: 11, opacity: 0.85 }}>Sri Lanka student guidance</div>
+              <div style={{ fontWeight: 600, fontSize: 15 }}>🎓 InfoMind</div>
+              <div style={{ fontSize: 11, opacity: 0.85 }}>Career Guidance and Assistance</div>
             </div>
             <button onClick={() => setOpen(false)} style={{
               background: "none", border: "none", color: "white",
