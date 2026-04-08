@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
@@ -74,7 +75,11 @@ export default function Chatbot() {
                 fontSize: 13, boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
                 lineHeight: 1.5
               }}>
-                {m.text}
+                {m.from === "Bot" ? (
+                  <ReactMarkdown>{m.text}</ReactMarkdown>
+                ) : (
+                  m.text
+                )}
               </div>
             ))}
             {loading && (
