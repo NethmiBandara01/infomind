@@ -147,34 +147,42 @@ export default async function handler(req, res) {
   - Exam results: www.doenets.lk
   `;
   
-    try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are a friendly career guidance assistant for Sri Lankan students.
-  Answer using ONLY the knowledge base below. Be concise, warm and encouraging. Use simple English.
-  If the answer is not in the knowledge base, say "I'm not sure about that — please contact the relevant institution directly."
-  
-  KNOWLEDGE BASE:
-  ${KNOWLEDGE}
-  
-  STUDENT QUESTION: ${question}`
-              }]
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are a friendly career guidance assistant for Sri Lankan students.
+Answer using ONLY the knowledge base below. Be concise, warm and encouraging. Use simple English.
+If the answer is not in the knowledge base, say "I'm not sure about that — please contact the relevant institution directly."
+
+KNOWLEDGE BASE:
+${KNOWLEDGE}
+
+STUDENT QUESTION: ${question}`
             }]
-          })
-        }
-      );
-  
-      const data = await response.json();
-      const answer = data.candidates[0].content.parts[0].text;
-      res.status(200).json({ answer });
-  
-    } catch (error) {
-      res.status(500).json({ error: "Something went wrong. Please try again." });
+          }]
+        })
+      }
+    );
+
+    const data = await response.json();
+    
+    // Return full data so we can see what Gemini is sending back
+    if (!response.ok) {
+      return res.status(500).json({ error: JSON.stringify(data) });
     }
+
+    const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text 
+      || "Sorry, I could not generate an answer. Please try again.";
+    
+    res.status(200).json({ answer });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
   }
